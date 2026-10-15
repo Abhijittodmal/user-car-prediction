@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AutoValue | Used Car Price Predictor</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+</head>
+
+<body>
+
+    <header class="navbar">
+        <a href="/" class="logo">Auto<span>Value</span></a>
+        <span class="tagline">SMART CAR VALUATION</span>
+    </header>
+
+    <main class="container">
+
+        <section class="hero">
+            <div class="badge">MACHINE LEARNING POWERED</div>
+
+            <h1>Find the real value<br>
+                <span>of your next car.</span>
+            </h1>
+
+            <p>
+                Enter the car's details to estimate its price
+                and find out whether the asking price is reasonable.
+            </p>
+        </section>
+
+        <section class="card">
+
+            <div class="card-heading">
+                <div>
+                    <h2>Car Information</h2>
+                    <p>Provide the details below to get started.</p>
+                </div>
+
+                <div class="car-icon">🚘</div>
+            </div>
+
+            <form id="predictionForm">
+
+                <div class="form-grid">
+
+                    <div class="field">
+                        <label for="Brand">Car Brand</label>
+
+                        <input
+                            id="Brand"
+                            name="Brand"
+                            type="text"
+                            placeholder="e.g. Hyundai"
+                            required
+                        >
+                    </div>
+
+                    <div class="field">
+                        <label for="Year">Manufacturing Year</label>
+
+                        <input
+                            id="Year"
+                            name="Year"
+                            type="number"
+                            min="1900"
+                            max="2026"
+                            placeholder="e.g. 2021"
+                            required
+                        >
+                    </div>
+
+                    <div class="field">
+                        <label for="Kilometers_Driven">
+                            Kilometers Driven
+                        </label>
+
+                        <input
+                            id="Kilometers_Driven"
+                            name="Kilometers_Driven"
+                            type="number"
+                            min="0"
+                            placeholder="e.g. 35000"
+                            required
+                        >
+                    </div>
+
+                    <div class="field">
+                        <label for="Engine_CC">Engine Capacity (CC)</label>
+
+                        <input
+                            id="Engine_CC"
+                            name="Engine_CC"
+                            type="number"
+                            min="1"
+                            step="any"
+                            placeholder="e.g. 1197"
+                            required
+                        >
+                    </div>
+
+                    <div class="field">
+                        <label for="Mileage_Kmpl">Mileage (km/l)</label>
+
+                        <input
+                            id="Mileage_Kmpl"
+                            name="Mileage_Kmpl"
+                            type="number"
+                            min="0.1"
+                            step="any"
+                            placeholder="e.g. 18.5"
+                            required
+                        >
+                    </div>
+
+                    <div class="field">
+                        <label for="Fuel_Type">Fuel Type</label>
+
+                        <select id="Fuel_Type" name="Fuel_Type" required>
+                            <option value="">Choose fuel type</option>
+                            <option value="Petrol">Petrol</option>
+                            <option value="Diesel">Diesel</option>
+                            <option value="CNG">CNG</option>
+                            <option value="Electric">Electric</option>
+                            <option value="LPG">LPG</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="Transmission">Transmission</label>
+
+                        <select
+                            id="Transmission"
+                            name="Transmission"
+                            required
+                        >
+                            <option value="">Choose transmission</option>
+                            <option value="Manual">Manual</option>
+                            <option value="Automatic">Automatic</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="Owner">Previous Owners</label>
+
+                        <select id="Owner" name="Owner" required>
+                            <option value="">Choose owner category</option>
+                            <option value="First">First owner</option>
+                            <option value="Second">Second owner</option>
+                            <option value="Third">Third owner</option>
+                            <option value="Fourth or more">
+                                Fourth or more
+                            </option>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+                    </div>
+
+                    <div class="field full-width">
+                        <label for="asking_price">
+                            Seller's Asking Price
+                        </label>
+
+                        <input
+                            id="asking_price"
+                            name="asking_price"
+                            type="number"
+                            min="0.01"
+                            step="any"
+                            placeholder="Enter price in the dataset's target units"
+                            required
+                        >
+
+                        <small>
+                            Use the same price units as your training dataset.
+                        </small>
+                    </div>
+
+                </div>
+
+                <button type="submit" id="predictButton">
+                    Predict Car Price <span>→</span>
+                </button>
+
+            </form>
+
+            <div id="loading" class="loading hidden">
+                Analyzing your car details...
+            </div>
+
+            <div id="error" class="error hidden" role="alert"></div>
+
+            <section id="result" class="result hidden" aria-live="polite">
+
+                <div class="divider"></div>
+
+                <p class="result-label">ESTIMATED CAR PRICE</p>
+
+                <h2 id="predictedPrice">0</h2>
+
+                <p id="comparison"></p>
+
+                <div id="recommendation" class="recommendation"></div>
+
+                <p id="reason" class="reason"></p>
+
+                <button type="button" id="resetButton" class="reset">
+                    Check Another Car
+                </button>
+
+            </section>
+
+        </section>
+
+        <p class="disclaimer">
+            <strong>Disclaimer:</strong>
+            This prediction is an estimate, not a guarantee of market value.
+            Always inspect the car, verify its documents, and review its
+            maintenance history before purchasing.
+        </p>
+
+    </main>
+
+    <footer>
+        AutoValue &copy; 2026 | Make smarter car-buying decisions.
+    </footer>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>
